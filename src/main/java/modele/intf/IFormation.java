@@ -2,18 +2,20 @@ package modele.intf;
 
 import java.util.List;
 
+import exception.model.ModelException;
+
 /**
  * Created by VTanchereau on 28/06/2017.
  */
 public interface IFormation {
     int getId();
-    void setId(int id);
-    String getNom();
-    void setNom(String nom);
-    ISpecialite getSpecialite();
-    void setSpecialite(ISpecialite specialite);
-    IObjectif getObjectif();
-    void setObjectif(IObjectif objectif);
-    List<ICreneau> getListCreneaux();
-    void setListCreneaux(List<ICreneau> listCreneaux);
+    void setId(int id) throws ModelException;
+    String getNom() throws ModelException;
+    void setNom(String nom) throws ModelException;
+    ISpecialite getSpecialite() throws ModelException;
+    void setSpecialite(ISpecialite specialite) throws ModelException;
+    IObjectif getObjectif() throws ModelException;
+    void setObjectif(IObjectif objectif) throws ModelException;
+    List<ICreneau> getListCreneaux() throws ModelException;
+    void setListCreneaux(List<ICreneau> listCreneaux) throws ModelException;
 }

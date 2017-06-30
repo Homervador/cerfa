@@ -17,17 +17,25 @@ public class FinancementStagiaire implements IFinancementStagiaire {
     private LocalDate dateDebut;
     private LocalDate dateFin;
 
-    public FinancementStagiaire(IStagiaire stagiaire, IFinancement financement, LocalDate dateDebut, LocalDate dateFin) {
+    public FinancementStagiaire(IStagiaire stagiaire, IFinancement financement, LocalDate dateDebut, LocalDate dateFin) throws ModelException {
         this.stagiaire = stagiaire;
         this.financement = financement;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
+        
+        this.checkDate();
+        this.checkListDate(this.dateDebut);
+        this.checkListDate(this.dateFin);
     }
 
-    public FinancementStagiaire(IStagiaire stagiaire, IFinancement financement, LocalDate dateDebut) {
+    public FinancementStagiaire(IStagiaire stagiaire, IFinancement financement, LocalDate dateDebut) throws ModelException {
         this.stagiaire = stagiaire;
         this.financement = financement;
         this.dateDebut = dateDebut;
+       
+        this.checkDate();
+        this.checkListDate(this.dateDebut);
+        this.checkListDate(this.dateFin);
     }
 
     public IStagiaire getStagiaire() {
@@ -50,32 +58,42 @@ public class FinancementStagiaire implements IFinancementStagiaire {
         return dateDebut;
     }
 
-    public void setDateDebut(LocalDate dateDebut) {
+    public void setDateDebut(LocalDate dateDebut) throws ModelException {
+    	this.checkListDate(dateDebut);
         this.dateDebut = dateDebut;
+        this.checkDate();
     }
 
     public LocalDate getDateFin() {
         return dateFin;
     }
 
-    public void setDateFin(LocalDate dateFin) {
+    public void setDateFin(LocalDate dateFin) throws ModelException {
+    	this.checkListDate(dateFin);
         this.dateFin = dateFin;
+        this.checkDate();
     }
     
     private void checkDate() throws ModelException{
     	if(this.dateDebut != null && this.dateFin != null){
-        	if(this.dateDebut.isEqual(this.dateFin)){
-        		
-        	}
-        	else if(this.dateDebut.isBefore(this.dateFin)){
-        		
-        	}
-        	else{
+        	if(this.dateFin.isBefore(this.dateDebut)){
         		throw new ModelException("");
         	}
         }
         else{
         	throw new ModelException("Les dates ne peuvent pas être null");
         }
+    }
+    
+    private void checkListDate(LocalDate date) throws ModelException{
+    	if(!this.getStagiaire().getListFinancementsStagiaires().isEmpty()){
+        	for(IFinancementStagiaire financement : this.getStagiaire().getListFinancementsStagiaires()){
+        		if(financement != this){
+        			if((date.isAfter(financement.getDateDebut()) && date.isBefore(financement.getDateFin())) || date.isEqual(financement.getDateDebut()) || date.isEqual(getDateFin())){
+            			throw new ModelException("Les dates ne peuvent pas se chevaucher");
+            		}
+        		}
+        	}
+    	}
     }
 }

@@ -9,12 +9,12 @@ import exception.model.ModelException;
  */
 public interface ISpecialite {
     int getId();
-    void setId(int id);
-    String getNom();
-    void setNom(String nom);
-    String getCode();
+    void setId(int id) throws ModelException;
+    String getNom() throws ModelException;
+    void setNom(String nom) throws ModelException;
+    String getCode() throws ModelException;
     void setCode(String code) throws ModelException;
-    List<IFormation> getListFormations();
-    void setListFormations(List<IFormation> listFormations);
+    List<IFormation> getListFormations() throws ModelException;
+    void setListFormations(List<IFormation> listFormations) throws ModelException;
 
 }

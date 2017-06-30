@@ -2,6 +2,7 @@ package dao.impl.mysql;
 
 import dao.intf.DAO;
 import db.ConnectionFactory;
+import exception.model.ModelException;
 
 import java.sql.Connection;
 import java.util.List;
@@ -15,8 +16,8 @@ public abstract class DAOImpl<T> implements DAO<T>{
             ConnectionFactory.CERFA
     );
 
-    public abstract T findById(int id);
-    public abstract List<T> findAll();
+    public abstract T findById(int id) throws ModelException;
+    public abstract List<T> findAll() throws ModelException;
     public abstract T insert(T formateur);
     public abstract T update(T formateur);
     public abstract int delete(T formateur);

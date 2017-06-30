@@ -1,6 +1,7 @@
 package dao.impl.mysql;
 
 import dao.intf.FinancementDAO;
+import exception.model.ModelException;
 import modele.impl.Financement;
 import modele.impl.FinancementStagiaire;
 import modele.intf.IFinancementStagiaire;
@@ -29,7 +30,7 @@ public class FinancementDAOImpl extends DAOImpl<Financement> implements Financem
 
 
     @Override
-    public Financement findById(int id) {
+    public Financement findById(int id) throws ModelException {
         String selectQueryById = new StringBuilder().append(this.selectQuery).append(" WHERE idFinancement  = ?").toString();
         Financement financement = null;
         try (PreparedStatement stm = con.prepareStatement(selectQueryById)){
@@ -68,7 +69,7 @@ public class FinancementDAOImpl extends DAOImpl<Financement> implements Financem
     }
 
     @Override
-    public List<Financement> findAll() {
+    public List<Financement> findAll() throws ModelException {
         HashMap<Integer, Financement> idToFinancement = new HashMap<>();
 
         try (PreparedStatement stm = con.prepareStatement(this.selectQuery)) {

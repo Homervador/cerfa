@@ -1,6 +1,7 @@
 package dao.impl.mysql;
 
 import dao.intf.CreneauDAO;
+import exception.model.ModelException;
 import modele.impl.Creneau;
 import modele.intf.IFormateur;
 import modele.intf.IFormation;
@@ -29,7 +30,7 @@ public class CreneauDAOImpl extends DAOImpl<Creneau> implements CreneauDAO {
     private final String deleteQuery = "DELETE FROM creneau WHERE idCreneau = ?";
 
     @Override
-    public Creneau findById(int id) {
+    public Creneau findById(int id) throws ModelException {
         String selectQueryById = new StringBuilder().append(this.selectQuery).append(" WHERE idCreneau = ?").toString();
         Creneau creneau = null;
         try (PreparedStatement stm = con.prepareStatement(selectQueryById)){
@@ -42,16 +43,22 @@ public class CreneauDAOImpl extends DAOImpl<Creneau> implements CreneauDAO {
 
             while (result.next()){
                 if (creneau == null){
-                    LocalDateTime dateDebut = result.getTimestamp("creneau.dateDebut").toLocalDateTime();
-                    LocalDateTime dateFin = result.getTimestamp("creneau.dateFin").toLocalDateTime();
-                    boolean interne = result.getBoolean("creneau.interne");
+					try {
+						
+						    LocalDateTime dateDebut = result.getTimestamp("creneau.dateDebut").toLocalDateTime();
+						    LocalDateTime dateFin = result.getTimestamp("creneau.dateFin").toLocalDateTime();
+						    boolean interne = result.getBoolean("creneau.interne");
 
-                    int idFormation = result.getInt("creneau.fk_formation");
-                    IFormation formation = new ProxyFormation(idFormation);
+						    int idFormation = result.getInt("creneau.fk_formation");
+						    IFormation formation = new ProxyFormation(idFormation);
 
-                    creneau = new Creneau(id, dateDebut, dateFin, interne, formation);
-                    idCreneauToFormateur.put(id, new ArrayList<>());
-                    idCreneauToStagiaire.put(id, new ArrayList<>());
+						    creneau = new Creneau(id, dateDebut, dateFin, interne, formation);
+						    idCreneauToFormateur.put(id, new ArrayList<>());
+						    idCreneauToStagiaire.put(id, new ArrayList<>());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                 }
 
                 int idFormateur = result.getInt("creneauformateur.fk_formateur");
@@ -84,7 +91,7 @@ public class CreneauDAOImpl extends DAOImpl<Creneau> implements CreneauDAO {
     }
 
     @Override
-    public List<Creneau> findAll() {
+    public List<Creneau> findAll() throws ModelException {
         HashMap<Integer, Creneau> idToCreneau = new HashMap<>();
 
         try (PreparedStatement stm = con.prepareStatement(this.selectQuery)){

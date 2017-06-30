@@ -2,6 +2,7 @@ package dao.impl.mysql;
 
 import dao.intf.StagiaireDAO;
 import db.ConnectionFactory;
+import exception.model.ModelException;
 import modele.impl.FinancementStagiaire;
 import modele.impl.Stagiaire;
 import modele.intf.ICreneau;
@@ -38,7 +39,7 @@ public class StagiaireDAOImpl extends DAOImpl<Stagiaire> implements StagiaireDAO
     private final String deleteStagiaireQuery = "DELETE FROM stagiaire WHERE idStagiaire = ?";
     private final String deletePersonneQuery = "DELETE FROM personne WHERE idPersonne = ?";
 
-    public Stagiaire findById(int id){
+    public Stagiaire findById(int id) throws ModelException{
         String selectQueryById = new StringBuilder().append(this.selectQuery).append(" WHERE idStagiaire = ?").toString();
         Stagiaire stagiaire = null;
         try (PreparedStatement stm = con.prepareStatement(selectQueryById)){
@@ -98,7 +99,7 @@ public class StagiaireDAOImpl extends DAOImpl<Stagiaire> implements StagiaireDAO
         return stagiaire;
     }
 
-    public List<Stagiaire> findAll(){
+    public List<Stagiaire> findAll() throws ModelException{
         HashMap<Integer, Stagiaire> idToStagiaire= new HashMap<>();
         try (PreparedStatement stm = con.prepareStatement(this.selectQuery)){
 

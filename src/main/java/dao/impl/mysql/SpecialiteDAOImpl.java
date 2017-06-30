@@ -1,6 +1,7 @@
 package dao.impl.mysql;
 
 import dao.intf.SpecialiteDAO;
+import exception.model.ModelException;
 import modele.impl.Specialite;
 import modele.intf.IFormation;
 import modele.proxy.ProxyFormation;
@@ -25,7 +26,7 @@ public class SpecialiteDAOImpl extends DAOImpl<Specialite> implements Specialite
     private final String deleteQuery = "DELETE FROM specialite WHERE idSpecialite = ?";
 
     @Override
-    public Specialite findById(int id) {
+    public Specialite findById(int id) throws ModelException {
         String selectQueryById = new StringBuilder().append(this.selectQuery).append(" WHERE idSpecialite = ?").toString();
         Specialite specialite = null;
         try (PreparedStatement stm = con.prepareStatement(selectQueryById)){
@@ -54,7 +55,7 @@ public class SpecialiteDAOImpl extends DAOImpl<Specialite> implements Specialite
     }
 
     @Override
-    public List<Specialite> findAll() {
+    public List<Specialite> findAll() throws ModelException {
         HashMap<Integer, Specialite> idToSpecialite= new HashMap<>();
         try (PreparedStatement stm = con.prepareStatement(this.selectQuery)){
             ResultSet result = stm.executeQuery();

@@ -23,7 +23,8 @@ public class ProxySpecialite implements ISpecialite {
         this.instance = null;
     }
 
-    private void getInstance(){
+    private void getInstance() throws ModelException
+    {
         if (instance == null) {
             DAO<Specialite> dao = DAOFactory.getDAO(DAONames.Specialite);
             this.instance = dao.findById(this.id);
@@ -36,26 +37,26 @@ public class ProxySpecialite implements ISpecialite {
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(int id) throws ModelException {
         this.id = id;
         this.getInstance();
         this.instance.setId(this.id);
     }
 
     @Override
-    public String getNom() {
+    public String getNom() throws ModelException {
         this.getInstance();
         return this.instance.getNom();
     }
 
     @Override
-    public void setNom(String nom) {
+    public void setNom(String nom) throws ModelException {
         this.getInstance();
         this.instance.setNom(nom);
     }
 
     @Override
-    public String getCode() {
+    public String getCode() throws ModelException {
         this.getInstance();
         return this.instance.getCode();
     }
@@ -67,19 +68,24 @@ public class ProxySpecialite implements ISpecialite {
     }
 
     @Override
-    public List<IFormation> getListFormations() {
+    public List<IFormation> getListFormations() throws ModelException {
         getInstance();
         return this.instance.getListFormations();
     }
 
     @Override
-    public void setListFormations(List<IFormation> listFormations) {
+    public void setListFormations(List<IFormation> listFormations) throws ModelException {
         getInstance();
         this.instance.setListFormations(listFormations);
     }
 
     public String toString(){
-        this.getInstance();
+        try {
+			this.getInstance();
+		} catch (ModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return this.instance.toString();
     }
 }

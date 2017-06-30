@@ -4,13 +4,13 @@ import modele.impl.Stagiaire;
 
 import java.util.List;
 
-/**
- * Created by VTanchereau on 27/06/2017.
- */
+import exception.model.ModelException;
+
+
 public interface StagiaireDAO extends DAO<Stagiaire> {
 
-    Stagiaire findById(int id);
-    List<Stagiaire> findAll();
+    Stagiaire findById(int id) throws ModelException;
+    List<Stagiaire> findAll() throws ModelException;
     Stagiaire insert(Stagiaire objectif);
     Stagiaire update(Stagiaire objectif);
     int delete(Stagiaire objectif);

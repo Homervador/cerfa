@@ -3,6 +3,7 @@ package modele.proxy;
 import dao.DAOFactory;
 import dao.DAONames;
 import dao.intf.DAO;
+import exception.model.ModelException;
 import modele.impl.Creneau;
 import modele.impl.Formateur;
 import modele.intf.ICreneau;
@@ -23,7 +24,7 @@ public class ProxyFormateur implements IFormateur {
         this.instance = null;
     }
 
-    private void getInstance(){
+    private void getInstance() throws ModelException{
         if (instance == null) {
             DAO<Formateur> dao = DAOFactory.getDAO(DAONames.Formateur);
             this.instance = dao.findById(this.id);
@@ -36,62 +37,67 @@ public class ProxyFormateur implements IFormateur {
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(int id) throws ModelException {
         this.id = id;
         this.getInstance();
         this.instance.setId(this.id);
     }
 
     @Override
-    public String getNom() {
+    public String getNom() throws ModelException {
         getInstance();
         return this.getNom();
     }
 
     @Override
-    public void setNom(String nom) {
+    public void setNom(String nom) throws ModelException {
         getInstance();
         this.instance.setNom(nom);
     }
 
     @Override
-    public String getPrenom() {
+    public String getPrenom() throws ModelException {
         getInstance();
         return this.instance.getPrenom();
     }
 
     @Override
-    public void setPrenom(String prenom) {
+    public void setPrenom(String prenom) throws ModelException {
         getInstance();
         this.instance.setPrenom(prenom);
     }
 
     @Override
-    public boolean isInterne() {
+    public boolean isInterne() throws ModelException {
         getInstance();
         return this.instance.isInterne();
     }
 
     @Override
-    public void setInterne(boolean interne) {
+    public void setInterne(boolean interne) throws ModelException {
         getInstance();
         this.instance.setInterne(interne);
     }
 
     @Override
-    public List<ICreneau> getListCreneaux() {
+    public List<ICreneau> getListCreneaux() throws ModelException {
         getInstance();
         return this.instance.getListCreneaux();
     }
 
     @Override
-    public void setListCreneaux(List<ICreneau> listCreneaux) {
+    public void setListCreneaux(List<ICreneau> listCreneaux) throws ModelException {
         getInstance();
         this.instance.setListCreneaux(listCreneaux);
     }
 
     public String toString(){
-        this.getInstance();
+        try {
+			this.getInstance();
+		} catch (ModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return this.instance.toString();
     }
 }

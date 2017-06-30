@@ -1,6 +1,7 @@
 package modele.proxy;
 
 import dao.intf.DAO;
+import exception.model.ModelException;
 import dao.DAOFactory;
 import dao.DAONames;
 import modele.impl.Objectif;
@@ -22,7 +23,7 @@ public class ProxyObjectif implements IObjectif{
         this.instance = null;
     }
 
-    private void getInstance(){
+    private void getInstance() throws ModelException{
         if (instance == null) {
             DAO<Objectif> dao = DAOFactory.getDAO(DAONames.Objectif);
             this.instance = dao.findById(this.id);
@@ -35,38 +36,43 @@ public class ProxyObjectif implements IObjectif{
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(int id) throws ModelException {
         this.id = id;
         this.getInstance();
         this.instance.setId(id);
     }
 
     @Override
-    public String getLibelle() {
+    public String getLibelle() throws ModelException {
         this.getInstance();
         return this.instance.getLibelle();
     }
 
     @Override
-    public void setLibelle(String libelle) {
+    public void setLibelle(String libelle) throws ModelException {
         this.getInstance();
         this.instance.setLibelle(libelle);
     }
 
     @Override
-    public List<IFormation> getListFormations() {
+    public List<IFormation> getListFormations() throws ModelException {
         getInstance();
         return this.instance.getListFormations();
     }
 
     @Override
-    public void setListFormations(List<IFormation> listFormations) {
+    public void setListFormations(List<IFormation> listFormations) throws ModelException {
         getInstance();
         this.instance.setListFormations(listFormations);
     }
 
     public String toString(){
-        this.getInstance();
+        try {
+			this.getInstance();
+		} catch (ModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return this.instance.toString();
     }
 }

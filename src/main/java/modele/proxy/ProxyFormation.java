@@ -3,6 +3,7 @@ package modele.proxy;
 import dao.DAOFactory;
 import dao.DAONames;
 import dao.intf.DAO;
+import exception.model.ModelException;
 import modele.impl.Formation;
 import modele.intf.ICreneau;
 import modele.intf.IFormation;
@@ -23,7 +24,7 @@ public class ProxyFormation implements IFormation{
         this.instance = null;
     }
 
-    private void getInstance(){
+    private void getInstance() throws ModelException{
         if (instance == null) {
             DAO<Formation> dao = DAOFactory.getDAO(DAONames.Formation);
             this.instance = dao.findById(this.id);
@@ -36,7 +37,7 @@ public class ProxyFormation implements IFormation{
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(int id) throws ModelException {
         this.id = id;
         getInstance();
 
@@ -44,56 +45,61 @@ public class ProxyFormation implements IFormation{
     }
 
     @Override
-    public String getNom() {
+    public String getNom() throws ModelException {
         getInstance();
         return this.instance.getNom();
     }
 
     @Override
-    public void setNom(String nom) {
+    public void setNom(String nom) throws ModelException {
         getInstance();
         this.instance.setNom(nom);
     }
 
     @Override
-    public ISpecialite getSpecialite() {
+    public ISpecialite getSpecialite() throws ModelException {
         getInstance();
         return this.instance.getSpecialite();
     }
 
     @Override
-    public void setSpecialite(ISpecialite specialite) {
+    public void setSpecialite(ISpecialite specialite) throws ModelException {
         getInstance();
         this.instance.setSpecialite(specialite);
     }
 
     @Override
-    public IObjectif getObjectif() {
+    public IObjectif getObjectif() throws ModelException {
         getInstance();
         return this.instance.getObjectif();
     }
 
     @Override
-    public void setObjectif(IObjectif objectif) {
+    public void setObjectif(IObjectif objectif) throws ModelException {
         getInstance();
         this.instance.setObjectif(objectif);
 
     }
 
     @Override
-    public List<ICreneau> getListCreneaux() {
+    public List<ICreneau> getListCreneaux() throws ModelException {
         getInstance();
         return this.instance.getListCreneaux();
     }
 
     @Override
-    public void setListCreneaux(List<ICreneau> listCreneaux) {
+    public void setListCreneaux(List<ICreneau> listCreneaux) throws ModelException {
         getInstance();
         this.instance.setListCreneaux(listCreneaux);
     }
 
     public String toString(){
-        this.getInstance();
+        try {
+			this.getInstance();
+		} catch (ModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return this.instance.toString();
     }
 }

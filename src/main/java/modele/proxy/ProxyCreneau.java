@@ -26,7 +26,7 @@ public class ProxyCreneau implements ICreneau {
         this.instance = null;
     }
 
-    private void getInstance(){
+    private void getInstance() throws ModelException{
         if (instance == null) {
             DAO<Creneau> dao = DAOFactory.getDAO(DAONames.Creneau);
             this.instance = dao.findById(this.id);
@@ -39,13 +39,13 @@ public class ProxyCreneau implements ICreneau {
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(int id) throws ModelException {
         this.getInstance();
         this.instance.setId(id);
     }
 
     @Override
-    public LocalDateTime getDateDebut() {
+    public LocalDateTime getDateDebut() throws ModelException {
         this.getInstance();
         return this.instance.getDateDebut();
     }
@@ -57,7 +57,7 @@ public class ProxyCreneau implements ICreneau {
     }
 
     @Override
-    public LocalDateTime getDateFin() {
+    public LocalDateTime getDateFin() throws ModelException {
         this.getInstance();
         return this.instance.getDateFin();
     }
@@ -69,55 +69,60 @@ public class ProxyCreneau implements ICreneau {
     }
 
     @Override
-    public boolean isInterne() {
+    public boolean isInterne() throws ModelException {
         this.getInstance();
         return this.instance.isInterne();
     }
 
     @Override
-    public void setInterne(boolean interne) {
+    public void setInterne(boolean interne) throws ModelException {
         this.getInstance();
         this.instance.setInterne(interne);
     }
 
     @Override
-    public IFormation getFormation() {
+    public IFormation getFormation() throws ModelException {
         this.getInstance();
         return this.instance.getFormation();
     }
 
     @Override
-    public void setFormation(IFormation formation) {
+    public void setFormation(IFormation formation) throws ModelException {
         this.getInstance();
         this.instance.setFormation(formation);
     }
 
     @Override
-    public List<IStagiaire> getListStagiaires() {
+    public List<IStagiaire> getListStagiaires() throws ModelException {
         this.getInstance();
         return this.instance.getListStagiaires();
     }
 
     @Override
-    public void setListStagiaires(List<IStagiaire> listStagiaires) {
+    public void setListStagiaires(List<IStagiaire> listStagiaires) throws ModelException {
         this.getInstance();
         this.instance.setListStagiaires(listStagiaires);
     }
 
     @Override
-    public List<IFormateur> getListFormateurs() {
+    public List<IFormateur> getListFormateurs() throws ModelException {
         this.getInstance();
         return this.instance.getListFormateurs();
     }
 
     @Override
-    public void setListFormateurs(List<IFormateur> listFormateurs) {
+    public void setListFormateurs(List<IFormateur> listFormateurs) throws ModelException {
         this.getInstance();
         this.instance.setListFormateurs(listFormateurs);
     }
 
     public String toString(){
-        this.getInstance();
+        try {
+			this.getInstance();
+		} catch (ModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return this.instance.toString();
     }
 }
